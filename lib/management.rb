@@ -1,5 +1,5 @@
 class Management
 	def initialize
-		b = Board(19)
+		b = Board(9)
 	end
 end

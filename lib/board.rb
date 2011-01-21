@@ -10,53 +10,78 @@ class Board
 		else
 			return false
 		end
+		a=[]
+		if alive?(x-1,y,a) == false then
+			empty(a)
+		end
 		
-		alive?(x-1,y)
-		alive?(x,y+1)
-		alive?(x+1,y)
-		alive?(x,y-1)
+		if alive?(x,y+1,a) == false then
+			empty(a)
+		end
+		
+		if alive?(x+1,y,a) == false then
+			empty(a)
+		end
+		
+		if alive?(x,y-1,a) == false then
+			empty(a)
+		end
+		
+		if(!alive?(x,y)){
+			board[x][y] = :empty
+			return true
+		}
 		
 	end
-	def alive?(x,y)
-		check_a = []
-		if board[x-1][y].status == :empty then
-			return true
-		end
-		if board[x][y+1].status == :empty then
-			return true
-		end
-		if board[x+1][y].status == :empty then
-			return true
-		end
-		if board[x][y-1].status == :empty then
-			return true
-		end
+	def alive?(x,y,a)
+		if( a.include?([x,y] == false ) then
+			
+			if board[x-1][y].status == :empty then
+				return true
+			end
+			if board[x][y+1].status == :empty then
+				return true
+			end
+			if board[x+1][y].status == :empty then
+				return true
+			end
+			if board[x][y-1].status == :empty then
+				return true
+			end
 		
-		#Thread
-		if board[x-1][y].status == board[x][y].status then
-			if alive?(x-1,y) then
-				return true
+			#Thread
+			if board[x-1][y].status == board[x][y].status then
+				if alive?(x-1,y,a) then
+					return true
+				end
 			end
-		end
-		if board[x][y+1].status == board[x][y].status then
-			if alive?(x,y+1) then
-				return true
+			if board[x][y+1].status == board[x][y].status then
+				if alive?(x,y+1,a) then
+					return true
+				end
 			end
-		end
-		if board[x+1][y].status == board[x][y].status then
-			if alive?(x+1,y) then
-				return true
+			if board[x+1][y].status == board[x][y].status then
+				if alive?(x+1,y,a) then
+					return true
+				end
 			end
-		end
-		if board[x][y-1].status == board[x][y].status then
-			if alive?(x,y-1) then
-				return true
+			if board[x][y-1].status == board[x][y].status then
+				if alive?(x,y-1,a) then
+					return true
+				end
 			end
+			#Thread
+			a << [x,y]
 		end
-		#Thread
-		
 		
 		return false
 		
 	end
+	def empty(a)
+		a.each{|ar|
+			x,y = ar
+			board[x][y] = :empty
+		}
+	end
+	
 end
