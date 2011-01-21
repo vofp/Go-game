@@ -1,9 +1,13 @@
 #this is the board rb file
+require 'stone'
 
 class Board
+	
 	def initialize(size)
-    @board = Array::new(size,Array::new(size,Stone(:empty)))
+		@size = size
+		@board = Array::new(size,Array::new(size,Stone.new(:empty)))
 	end
+	
 	def add_stone(color,x,y)
 		if board[x][y] == :empty then
 			board[x][y].status = color
@@ -27,13 +31,19 @@ class Board
 			empty(a)
 		end
 		
-		if(!alive?(x,y)){
+		if( alive?(x,y) == false ){
 			board[x][y] = :empty
 			return true
 		}
 		
 	end
+	
 	def alive?(x,y,a)
+		
+		if(x < 0 || x >= size || y < 0 || y >= size ) then
+			return false
+		end
+		
 		if( a.include?([x,y] == false ) then
 			
 			if board[x-1][y].status == :empty then
@@ -77,6 +87,7 @@ class Board
 		return false
 		
 	end
+	
 	def empty(a)
 		a.each{|ar|
 			x,y = ar
