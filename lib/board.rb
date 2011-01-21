@@ -70,6 +70,7 @@ class Board
 			end
 		
 			#Thread
+			a << [x,y]
 			if x-1 >=0 && @board[x-1][y] == @board[x][y] then
 				if alive?(x-1,y,a) then
 					return true
@@ -91,7 +92,6 @@ class Board
 				end
 			end
 			#Thread
-			a << [x,y]
 			
 		end
 		
