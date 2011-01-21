@@ -1,16 +1,23 @@
 #this is the board rb file
-require 'stone'
+#require 'stone'
 
 class Board
-	
+	attr_accessor :size, :board
 	def initialize(size)
 		@size = size
-		@board = Array::new(size,Array::new(size,Stone.new(:empty)))
+		@board = []
+		0.upto(@size-1){|x|
+			@board << []
+			0.upto(@size-1){|y|
+				@board[x][y] = :empty
+			}
+		}
+		
 	end
 	
 	def add_stone(color,x,y)
-		if board[x][y] == :empty then
-			board[x][y].status = color
+		if @board[x][y] == :empty then
+			@board[x][y] = color
 		else
 			return false
 		end
@@ -18,24 +25,27 @@ class Board
 		if alive?(x-1,y,a) == false then
 			empty(a)
 		end
-		
+		a=[]
 		if alive?(x,y+1,a) == false then
 			empty(a)
 		end
 		
+		a=[]
 		if alive?(x+1,y,a) == false then
 			empty(a)
 		end
 		
+		a=[]
 		if alive?(x,y-1,a) == false then
 			empty(a)
 		end
 		
-		if( alive?(x,y) == false ){
-			board[x][y] = :empty
-			return true
-		}
-		
+		a=[]
+		if alive?(x,y,a) == false then
+			@board[x][y] = :empty
+			return false
+		end
+		return true
 	end
 	
 	def alive?(x,y,a)
@@ -44,44 +54,45 @@ class Board
 			return false
 		end
 		
-		if( a.include?([x,y] == false ) then
+		if a.include?( [x,y] )== false then
 			
-			if board[x-1][y].status == :empty then
+			if x-1 >=0 && @board[x-1][y] == :empty then
 				return true
 			end
-			if board[x][y+1].status == :empty then
+			if y+1 < size && @board[x][y+1] == :empty then
 				return true
 			end
-			if board[x+1][y].status == :empty then
+			if x+1 < size && @board[x+1][y] == :empty then
 				return true
 			end
-			if board[x][y-1].status == :empty then
+			if y-1 >= 0 && @board[x][y-1] == :empty then
 				return true
 			end
 		
 			#Thread
-			if board[x-1][y].status == board[x][y].status then
+			if x-1 >=0 && @board[x-1][y] == @board[x][y] then
 				if alive?(x-1,y,a) then
 					return true
 				end
 			end
-			if board[x][y+1].status == board[x][y].status then
+			if y+1 < size && @board[x][y+1] == @board[x][y] then
 				if alive?(x,y+1,a) then
 					return true
 				end
 			end
-			if board[x+1][y].status == board[x][y].status then
+			if x+1 < size && @board[x+1][y] == @board[x][y] then
 				if alive?(x+1,y,a) then
 					return true
 				end
 			end
-			if board[x][y-1].status == board[x][y].status then
+			if y-1 >= 0 && @board[x][y-1] == @board[x][y] then
 				if alive?(x,y-1,a) then
 					return true
 				end
 			end
 			#Thread
 			a << [x,y]
+			
 		end
 		
 		return false
@@ -91,8 +102,9 @@ class Board
 	def empty(a)
 		a.each{|ar|
 			x,y = ar
-			board[x][y] = :empty
+			@board[x][y] = :empty
 		}
 	end
 	
 end
+
