@@ -6,6 +6,7 @@ require 'board'
 class Gui  < Processing::App
 	#attr_accessor :size, :stones, :b
 	def setup
+		no_loop
 		smooth
     no_stroke
     frame_rate 30
@@ -71,7 +72,9 @@ class Gui  < Processing::App
 			@turn = (@turn == :black ? :white : :black)
 		end
 	end
-
+	def mouseMoved
+		redraw
+	end
 end
 
 Gui.new(:width => 800, :height => 800, :title => "Go")

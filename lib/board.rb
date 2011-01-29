@@ -21,25 +21,25 @@ class Board
 		else
 			return false
 		end
+		c = color == :black ? :white : :black
 		a=[]
-		if alive?(x-1,y,a) == false then
+		if @board[x-1][y]==c && alive?(x-1,y,a) == false then
 			empty(a)
 		end
 		a=[]
-		if alive?(x,y+1,a) == false then
-			empty(a)
-		end
-		
-		a=[]
-		if alive?(x+1,y,a) == false then
+		if @board[x][y+1]==c &&  alive?(x,y+1,a) == false then
 			empty(a)
 		end
 		
 		a=[]
-		if alive?(x,y-1,a) == false then
+		if @board[x+1][y]==c && alive?(x+1,y,a) == false then
 			empty(a)
 		end
-		
+	
+		a=[]
+		if @board[x][y-1]==c && alive?(x,y-1,a) == false then
+			empty(a)
+		end
 		a=[]
 		if alive?(x,y,a) == false then
 			@board[x][y] = :empty
