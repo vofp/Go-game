@@ -52,7 +52,7 @@ class Gui  < Processing::App
 		y = mouseX/@size
 		x = mouseY/@size
 
-		if @b.board[x][y] == :empty then
+		if @b.board[x]!=nil && @b.board[x][y] != nil && @b.board[x][y] == :empty then
 			if @turn == :black then
 				fill(0,150)
 				ellipse(y*@size+@size/2,x*@size+@size/2, 5*@size/6,5*@size/6)
@@ -76,6 +76,8 @@ class Gui  < Processing::App
 		redraw
 	end
 end
-
-Gui.new(:width => 800, :height => 800, :title => "Go")
+END {
+	
+}
+Gui.new(:width => 900, :height => 900, :title => "Go")
 
