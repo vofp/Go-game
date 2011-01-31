@@ -2,7 +2,7 @@
 #require 'stone'
 
 class Board
-	attr_accessor :size, :board, :history
+	attr_accessor :size, :board, :history, :turn
 	def initialize(size)
 		@size = size
 		@board = []
@@ -13,11 +13,12 @@ class Board
 			}
 		}
 		@history = []
+		@turn = :black
 	end
 	
 	def add_stone(color,x,y)
-		turn = {:move => [x,y], :kills => [], :color => color}
-		@turn = turn
+		turn_stat = {:move => [x,y], :kills => [], :color => color}
+		@turn_stat = turn_stat
 		if @board[x][y] == :empty then
 			@board[x][y] = color
 		else
@@ -47,8 +48,8 @@ class Board
 			@board[x][y] = :empty
 			return false
 		end
-		@history << turn
-		p history
+		@history << turn_stat
+		#p history
 		return true
 	end
 	
@@ -104,7 +105,7 @@ class Board
 	end
 	
 	def empty(a)
-		@turn[:kills]+=a
+		@turn_stat[:kills]+=a
 		a.each{|ar|
 			x,y = ar
 			@board[x][y] = :empty

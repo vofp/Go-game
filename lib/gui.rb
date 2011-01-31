@@ -11,8 +11,14 @@ class Gui  < Processing::App
     no_stroke
     frame_rate 30
     @stones = 19
-		@turn = :black
-		@b = Board.new(@stones)
+		#@turn = :black
+		if File::exist?("currentGame.obj")then
+			puts "loading obj"
+			File.open("currentGame.obj", 'r') {|f| @b = Marshal.load(f.read)}
+		else
+			puts "new game"
+			@b = Board.new(@stones)
+		end
 		#@b.add_stone(:black,0,0)
 		@size = (width < height ? width : height)/@stones
 	end
@@ -53,11 +59,11 @@ class Gui  < Processing::App
 		x = mouseY/@size
 
 		if @b.board[x]!=nil && @b.board[x][y] != nil && @b.board[x][y] == :empty then
-			if @turn == :black then
+			if @b.turn == :black then
 				fill(0,150)
 				ellipse(y*@size+@size/2,x*@size+@size/2, 5*@size/6,5*@size/6)
 				fill(255)
-			elsif @turn == :white then
+			elsif @b.turn == :white then
 				fill(255,150)
 				ellipse(y*@size+@size/2,x*@size+@size/2, 5*@size/6,5*@size/6)
 				fill(255)
@@ -68,16 +74,17 @@ class Gui  < Processing::App
 		y = mouseX/@size
 		x = mouseY/@size
 
-		if @b.add_stone(@turn,x,y) then
-			@turn = (@turn == :black ? :white : :black)
+		if @b.add_stone(@b.turn,x,y) then
+			@b.turn = (@b.turn == :black ? :white : :black)
 		end
+		o = Marshal.dump(@b)
+		File.open("currentGame.obj", 'w') {|f| f.write(o)}
+		
 	end
 	def mouseMoved
 		redraw
 	end
 end
-END {
-	
-}
+
 Gui.new(:width => 900, :height => 900, :title => "Go")
 
